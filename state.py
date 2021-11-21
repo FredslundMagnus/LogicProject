@@ -11,7 +11,16 @@ class State:
             return False
         if 6 in p_set and 7 in p_set and 8 in p_set:
             return False
+        if p[0]>p[1]:
+            return False
+        if p[2]>p[3]:
+            return False
+        if p[4]>p[5]:
+            return False
         return True
 
-    def __init__(self, permutation: list[int]) -> None:
-        self.state 
+    def __init__(self, p: list[int]) -> None:
+        self.state = p
+        self.player1 = set(p[:2])
+        self.player2 = set(p[2:4])
+        self.player3 = set(p[4:])
