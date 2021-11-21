@@ -21,6 +21,6 @@ class State:
 
     def __init__(self, p: list[int]) -> None:
         self.state = p
-        self.player1 = set(p[:2])
-        self.player2 = set(p[2:4])
-        self.player3 = set(p[4:])
+        p_set=set(p)
+        self.table = {i for i in range(9) if i not in p_set}
+        self.players = {0: set(p[:2]), 1: set(p[2:4]), 2: set(p[4:])}
