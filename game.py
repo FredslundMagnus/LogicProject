@@ -1,2 +1,6 @@
+from __future__ import annotations
+from graph import Graph
+
 class Game:
-    pass
+    def __init__(self) -> None:
+        self.graph: Graph = Graph()
