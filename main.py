@@ -1,3 +1,11 @@
-from graph import Graph
+from game import Game, Players
 
-graph = Graph()
+game = Game(Players.Computer, Players.Computer, Players.Computer)
+
+game.current_beliefs()
+
+for round in range(1, 10):
+    print(f"Round {round}!")
+    for i in range(3):
+        game.update(i, Game.sample())
+    game.current_beliefs()

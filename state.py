@@ -17,10 +17,18 @@ class State:
             return False
         if p[4]>p[5]:
             return False
+        # if 8 != p[1]:
+        #     return False
+        # if 7 != p[3]:
+        #     return False
         return True
 
     def __init__(self, p: list[int]) -> None:
         self.state = p
         p_set=set(p)
         self.table = {i for i in range(9) if i not in p_set}
-        self.players = {0: set(p[:2]), 1: set(p[2:4]), 2: set(p[4:])}
+        self.cards = {0: set(p[:2]), 1: set(p[2:4]), 2: set(p[4:])}
+        self.beliefs: set[int] = {0,1,2}
+
+    def __str__(self) -> str:
+        return f"{self.cards[0]} {self.cards[1]} {self.cards[2]}"
