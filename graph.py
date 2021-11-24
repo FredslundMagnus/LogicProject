@@ -37,11 +37,14 @@ class Graph:
 
     @staticmethod
     def info_about_clique(clique: list[State]) -> tuple[int, set[int], set[int], set[int], set[int]]:
-        table = set.intersection(*[s.table for s in clique])
-        player1 = set.intersection(*[s.cards[0] for s in clique])
-        player2 = set.intersection(*[s.cards[1] for s in clique])
-        player3 = set.intersection(*[s.cards[2] for s in clique])
-        n = sum([len(s) for s in [table, player1, player2, player3]])
+        try:
+            table = set.intersection(*[s.table for s in clique])
+            player1 = set.intersection(*[s.cards[0] for s in clique])
+            player2 = set.intersection(*[s.cards[1] for s in clique])
+            player3 = set.intersection(*[s.cards[2] for s in clique])
+            n = sum([len(s) for s in [table, player1, player2, player3]])
+        except TypeError:
+            return 0, set(), set(), set(), set()
         return n, table, player1, player2, player3
 
     def hear_cards_count(self, shared: list[int]):
