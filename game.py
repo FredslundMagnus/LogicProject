@@ -50,16 +50,17 @@ class Game:
             print(f"Player {i+1} is certain of {n} cards:    Player 1: {player1}, Player 2: {player2}, Player 3: {player3}, Table: {table}")
         print('')
 
+    def share(self) -> None:
+        shared = [None, None, None]
+        for i in range(3):
+            shared[i] = self.share_card_count(i)
+        self.graph.hear_cards_count(shared)
+
     def share_card_count(self, player: int) -> int:
         # if self.players[player] == Players.Computer:
         n, *_ = Graph.info_about_clique(self.graph.player_beliefs(player))
         print(f"Player {player+1} shares that he is sertain about the position of {n} cards.")
         return n
-        # self.graph.hear_card_count(player, n)
-
-    def hear_card_count(self, shared: list[int]) -> None:
-        # self.graph.hear_card_count(player, n)
-        pass
 
     
             

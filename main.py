@@ -9,9 +9,5 @@ for round in range(1, 6):
     for i in range(3):
         game.update(i, Game.sample())
     game.current_beliefs()
-    shared = [None, None, None]
-    for i in range(3):
-        shared[i] = game.share_card_count(i)
-    for i in range(3):
-        game.hear_card_count(shared)
+    game.share()
     game.current_beliefs()

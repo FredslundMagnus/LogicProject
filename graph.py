@@ -6,7 +6,7 @@ from random import choice
 class Graph:
     def __init__(self) -> None:
         self.states: list[State] = [State(p) for p in permutations(range(9),6) if State.isValid(p)]
-        self.edges: dict[tuple[State, State], set[int]] = {(a, b): Graph.start_edges(a,b) for a, b in product(self.states, self.states)}
+        # self.edges: dict[tuple[State, State], set[int]] = {(a, b): Graph.start_edges(a,b) for a, b in product(self.states, self.states)}
         self.state: State = choice(self.states)
         # print(len(self.states), len(self.states)//6)
         # print(len(self.edges), len(self.edges)//36)
@@ -32,23 +32,6 @@ class Graph:
                 states.append(state)
         self.states = states
 
-    def hear_card_count(self, player: int, n: int):
-        for p in range(3):
-            if p == player:
-                continue
-            p_thinks_is_possible = self.player_beliefs(p)
-            players_possible_hands = [set(s) for s in {frozenset(s.cards[player]) for s in p_thinks_is_possible}]
-            # print(player, p, players_possible_hands)
-            for possible_hand in players_possible_hands:
-                states = [s for s in self.states if s.cards[player] == possible_hand]
-                m, *_ = Graph.info_about_clique(states)
-                # print(possible_hand, n,n==m, m, states)
-                if n != m:
-                    for state in states:
-                        state.beliefs = {p_ for p_ in state.beliefs if p_ != p}
-
-            # self.states = [s for s in self.states if p in s.beliefs]
-
     def player_beliefs(self, player: int) -> list[State]:
         return [s for s in self.states if player in s.beliefs]
 
@@ -61,6 +44,15 @@ class Graph:
         n = sum([len(s) for s in [table, player1, player2, player3]])
         return n, table, player1, player2, player3
 
+    def hear_cards_count(self, shared: list[int]):
+        self.states = [state for state in self.states if self.fits(state, shared)]
+
+    def fits(self, state: State, was_shared: list[int]) -> bool:
+        states: list[list[State]] = []
+        for i in range(3):
+            states.append([s for s in self.states if s.cards[i] == state.cards[i]])
+        would_have_been_shared = [Graph.info_about_clique(clique)[0] for clique in states]
+        return all([a==b for a, b in zip(would_have_been_shared, was_shared)])
 
                 
 
