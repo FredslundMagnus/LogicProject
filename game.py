@@ -44,7 +44,7 @@ class Game:
         for i in range(3):
             beliefs[i] = [s for s in self.graph.states if i in s.beliefs]
             print(f"Player {i+1} has {len(beliefs[i])} states.", end=' ')
-        print('')
+        print(f'Total States: {len(self.graph.states)}')
         for i in range(3):
             n, table, player1, player2, player3 = Graph.info_about_clique(beliefs[i])
             print(f"Player {i+1} is certain of {n} cards:    Player 1: {player1}, Player 2: {player2}, Player 3: {player3}, Table: {table}")
