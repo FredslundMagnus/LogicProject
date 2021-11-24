@@ -13,9 +13,6 @@ class Players(Enum):
 class Game:
     def __init__(self, player1: Players, player2: Players, player3: Players) -> None:
         self.graph: Graph = Graph()
-        self.player1 = player1
-        self.player2 = player2
-        self.player3 = player3
         self.players = {0: player1, 1: player2, 2: player3}
         self.start()
         print(self)
@@ -53,7 +50,7 @@ class Game:
     def share(self) -> None:
         shared = [None, None, None]
         for i in range(3):
-            shared[i] = self.share_card_count(i)
+            shared[i] = self.share_card_count(i) if self.players[i] == Players.Computer else int(input("How many cards do you know? "))
         self.graph.hear_cards_count(shared)
 
     def share_card_count(self, player: int) -> int:
