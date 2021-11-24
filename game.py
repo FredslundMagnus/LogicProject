@@ -11,7 +11,7 @@ class Players(Enum):
 
 
 class Game:
-    def __init__(self, player1: Players, player2: Players, player3: Players, do_print: bool, rounds: int) -> None:
+    def __init__(self, player1: Players, player2: Players, player3: Players, do_print: bool = True, rounds: int = 3) -> None:
         self.graph: Graph = Graph()
         self.players = {0: player1, 1: player2, 2: player3}
         self.rounds: int = rounds
