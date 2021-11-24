@@ -60,7 +60,7 @@ class Game:
     def share_card_count(self, player: int) -> int:
         # if self.players[player] == Players.Computer:
         n, *_ = Graph.info_about_clique(self.graph.player_beliefs(player))
-        print(f"Player {player+1} shares that he is sertain about the position of {n} cards.")
+        print(f"Player {player+1} shares that he is certain about the position of {n} cards.")
         return n
 
     def __len__(self) -> int:
