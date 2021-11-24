@@ -47,6 +47,8 @@ class Graph:
                     for state in states:
                         state.beliefs = {p_ for p_ in state.beliefs if p_ != p}
 
+            # self.states = [s for s in self.states if p in s.beliefs]
+
     def player_beliefs(self, player: int) -> list[State]:
         return [s for s in self.states if player in s.beliefs]
 
