@@ -30,5 +30,5 @@ class State:
         self.cards = {0: set(p[:2]), 1: set(p[2:4]), 2: set(p[4:])}
         self.beliefs: set[int] = {0,1,2}
 
-    def __str__(self) -> str:
+    def __repr__(self) -> str:
         return f"{self.cards[0]} {self.cards[1]} {self.cards[2]}"
