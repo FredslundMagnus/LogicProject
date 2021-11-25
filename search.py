@@ -1,18 +1,8 @@
 
- 
-states = dict()
-for i in range(3):
-    for j in range(3):
-        for k in range(3):
-            states[(i,j,k)] = [set(), set(), set()]
-            for l in range(3):
-                for p in range(3):
-                    states[(i,j,k)][0].add((i,l,p)) 
-                    states[(i,j,k)][1].add((l,j,p))
-                    states[(i,j,k)][2].add((l,p,k))
 
 
-def super_search(states, possible_states, player, dept, assume_guess):
+
+def search(states, possible_states, player, dept, assume_guess):
     guess = 0
     for state in possible_states:
         guess += guess_search(states, state, dept, player, assume_guess)
@@ -37,9 +27,21 @@ def guess_search(states, state, dept, player, assume_guess):
         Eng_reward += next_guess[0] * next_guess[1] * (1 - prob[0]) * (1 - prob[1]) + next_guess[0] * (1 - next_guess[1]) * (1 - prob[0])
         Eng_reward += next_guess[1] * (1 - next_guess[0]) * (1 - prob[1]) + (1 - next_guess[0]) * (1 - next_guess[1])
     Eng_reward = Eng_reward/len(possible_states) - 1
-    print(Eng_reward, possible_states)
+    # print(Eng_reward, possible_states)
     return Eg_reward >= Eng_reward
 
         
-print(states[(0,0,0)][0])
-print(super_search(states, possible_states=states[(0,0,0)][0], dept=3, player=0, assume_guess=True))
+if __name__ == "__main__":
+    states = dict()
+    for i in range(3):
+        for j in range(3):
+            for k in range(3):
+                states[(i,j,k)] = [set(), set(), set()]
+                for l in range(3):
+                    for p in range(3):
+                        states[(i,j,k)][0].add((i,l,p)) 
+                        states[(i,j,k)][1].add((l,j,p))
+                        states[(i,j,k)][2].add((l,p,k))
+
+    print(states[(0,0,0)][0])
+    print(search(states, possible_states=states[(0,0,0)][0], dept=3, player=0, assume_guess=True))

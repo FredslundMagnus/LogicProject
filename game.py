@@ -1,8 +1,8 @@
 from __future__ import annotations
 from graph import Graph
 from enum import Enum
-from random import sample
-
+from random import sample, choice
+from search import search
 from state import State
 
 class Players(Enum):
@@ -68,10 +68,49 @@ class Game:
 
     def __getitem__(self, key: int) -> int:
         if key < self.rounds:
+            self.current_beliefs()
             print(f"\nRound {key + 1}!")
             return key + 1
         else:
+            self.current_beliefs()
+            print("The game is over.\n")
+            self.get_scores()
             raise StopIteration
+
+    def format_graph(self) -> dict[State, list[set[State]]]:
+        formatted: dict[State, list[set[State]]] = {}
+        for state in self.graph.states:
+            formatted[state] = []
+            for player in range(3):
+                formatted[state].append([s for s in self.graph.states if s.cards[player] == state.cards[player]])
+        return formatted
+
+    def search(self, depth: int = 3):
+        formatted = self.format_graph()
+        for player in range(3):
+            a = []
+            for assumption in [True, False]:
+                a.append(search(formatted, possible_states=formatted[self.graph.state][player], dept=depth, player=player, assume_guess=assumption))
+            yield a
+
+    def guess(self, should_guess: list[list[bool]]):
+        for player, should_guesses in enumerate(should_guess):
+            do_guess = choice(should_guesses)
+            guess = choice([s for s in self.graph.states if s.cards[player] == self.graph.state.cards[player]])
+            yield guess if do_guess else None
+
+    def get_scores(self):
+        correct = []
+        for player, guess in enumerate(self.guess(self.search())):
+            correct.append(guess == self.graph.state if guess != None else None)
+            print(f"Player {player} guesses: {guess}" + (f", this is {guess == self.graph.state}" if guess != None else ""))
+        print(f"The real state is {self.graph.state}")
+
+        mapping = {None: -1 if any(correct) else 0, True: 1, False: -1}
+        scores = [mapping[b] for b in correct]
+        for i, score in enumerate(scores):
+            print(f"Player {i+1} got a score of {score}.")
+
 
     
             

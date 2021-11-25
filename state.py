@@ -31,4 +31,4 @@ class State:
         self.beliefs: set[int] = {0,1,2}
 
     def __repr__(self) -> str:
-        return f"{self.cards[0]} {self.cards[1]} {self.cards[2]}"
+        return f"State(Player 1: {self.cards[0]}, Player 2: {self.cards[1]}, Player 3: {self.cards[2]}, Table : {self.table})"
