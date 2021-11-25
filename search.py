@@ -3,32 +3,35 @@
 
 
 def search(states, possible_states, player, dept, assume_guess):
-    guess = 0
+    Eng_reward = 0
     for state in possible_states:
-        guess += guess_search(states, state, dept, player, assume_guess)
-    return guess/len(possible_states) >= 0.5
+        Eng_reward += guess_search(states, state, dept, player, assume_guess, return_reward=True)
+    return Eng_reward/len(possible_states) <= 2/len(possible_states) - 1
 
 
-def guess_search(states, state, dept, player, assume_guess):
-    if dept == 0:
-        return assume_guess
+def guess_search(states, state, dept, player, assume_guess, return_reward):
     possible_states = states[state][player]
     Eg_reward = 2/len(possible_states) - 1
-    if Eg_reward >= 0:
-        return True
     Eng_reward = 0
-    for assumed_state in possible_states:
-        next_guess = []
-        prob = []
-        for other_player in range(len(states[state])):
-            if other_player != player:
-                next_guess.append(guess_search(states, assumed_state, dept-1, other_player, assume_guess))
-                prob.append(1 / len(states[assumed_state][other_player]))
-        Eng_reward += next_guess[0] * next_guess[1] * (1 - prob[0]) * (1 - prob[1]) + next_guess[0] * (1 - next_guess[1]) * (1 - prob[0])
-        Eng_reward += next_guess[1] * (1 - next_guess[0]) * (1 - prob[1]) + (1 - next_guess[0]) * (1 - next_guess[1])
-    Eng_reward = Eng_reward/len(possible_states) - 1
-    # print(Eng_reward, possible_states)
-    return Eg_reward >= Eng_reward
+    if dept > 0:
+        for assumed_state in possible_states:
+            next_guess = []
+            prob = []
+            for other_player in range(len(states[state])):
+                if other_player != player:
+                    next_guess.append(guess_search(states, assumed_state, dept-1, other_player, assume_guess, return_reward=False))
+                    prob.append(1 / len(states[assumed_state][other_player]))
+            Eng_reward += next_guess[0] * next_guess[1] * (1 - prob[0]) * (1 - prob[1]) + next_guess[0] * (1 - next_guess[1]) * (1 - prob[0])
+            Eng_reward += next_guess[1] * (1 - next_guess[0]) * (1 - prob[1]) + (1 - next_guess[0]) * (1 - next_guess[1])
+        Eng_reward = Eng_reward/len(possible_states) - 1
+    if return_reward:
+        return Eng_reward
+    if Eg_reward >= 0 or Eg_reward >= Eng_reward:
+        return True
+    if dept == 0:
+        return assume_guess
+    else:
+        return False
 
         
 if __name__ == "__main__":
