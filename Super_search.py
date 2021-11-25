@@ -12,17 +12,19 @@ for i in range(3):
                     states[(i,j,k)][2].add((l,p,k))
 
 
-def super_search(states, possible_states, player, dept):
+def super_search(states, possible_states, player, dept, assume_guess):
     guess = 0
     for state in possible_states:
-        guess += guess_search(states, state, dept, player)
+        guess += guess_search(states, state, dept, player, assume_guess)
     return guess/len(possible_states) >= 0.5
 
 
-def guess_search(states, state, dept, player):
+def guess_search(states, state, dept, player, assume_guess):
+    if dept == 0:
+        return assume_guess
     possible_states = states[state][player]
     Eg_reward = 2/len(possible_states) - 1
-    if Eg_reward >= 0 or dept == 0:
+    if Eg_reward >= 0:
         return True
     Eng_reward = 0
     for assumed_state in possible_states:
@@ -30,7 +32,7 @@ def guess_search(states, state, dept, player):
         prob = []
         for other_player in range(len(states[state])):
             if other_player != player:
-                next_guess.append(guess_search(states, assumed_state, dept-1, other_player))
+                next_guess.append(guess_search(states, assumed_state, dept-1, other_player, assume_guess))
                 prob.append(1 / len(states[assumed_state][other_player]))
         Eng_reward += next_guess[0] * next_guess[1] * (1 - prob[0]) * (1 - prob[1]) + next_guess[0] * (1 - next_guess[1]) * (1 - prob[0])
         Eng_reward += next_guess[1] * (1 - next_guess[0]) * (1 - prob[1]) + (1 - next_guess[0]) * (1 - next_guess[1])
@@ -40,4 +42,4 @@ def guess_search(states, state, dept, player):
 
         
 print(states[(0,0,0)][0])
-print(super_search(states, possible_states=states[(0,0,0)][0], dept=3, player=0))
+print(super_search(states, possible_states=states[(0,0,0)][0], dept=3, player=0, assume_guess=True))
