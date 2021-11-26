@@ -2,7 +2,7 @@ from __future__ import annotations
 from game import Game, Players
 from contextlib import redirect_stdout as printer
 from sys import stdout as terminal
-
+import numpy as np
 
 all_scores: list[list[int]] = []
 did_agree: list[list[bool]] = []
@@ -33,7 +33,11 @@ print("\n\n")
 print(all_scores)
 print(did_agree)
 print("\n\n")
+
+
 print([sum(a) for a in all_scores])
 print([f"{sum(a)/len(a):.2f}" for a in all_scores])
+print([(1.96 * np.std(a)/np.sqrt(len(a)))/len(a) for a in all_scores])
 print([sum(a) for a in did_agree])
 print([f"{sum(a)/len(a)*100:.2f}%" for a in did_agree])
+print([(1.96 * np.std(a)/np.sqrt(len(a)))/len(a) for a in did_agree])
