@@ -7,7 +7,7 @@ from sys import stdout as terminal
 all_scores: list[list[int]] = []
 did_agree: list[list[bool]] = []
 
-n: int = 10
+n: int = 100
 d: int = 5
 
 
@@ -29,8 +29,9 @@ with printer(None):
             all_scores[depth].extend(game.scores)
             did_agree[depth].extend(g[0] == g[1] for g in game.should_guesses)
 
-# print(all_scores)
-# print(did_agree)
+print("\n\n")
+print(all_scores)
+print(did_agree)
 print("\n\n")
 print([sum(a) for a in all_scores])
 print([f"{sum(a)/len(a):.2f}" for a in all_scores])
