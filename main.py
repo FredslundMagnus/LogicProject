@@ -9,6 +9,7 @@ for round in game:
     game.current_beliefs()
     game.share()
 
-
 print(game.should_guesses)
+print([g[0] == g[1] for g in game.should_guesses])
+print(sum([int(g[0] == g[1]) for g in game.should_guesses]))
 print(game.scores)
