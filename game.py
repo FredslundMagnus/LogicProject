@@ -5,20 +5,22 @@ from random import sample, choice
 from search import search
 from state import State
 
+
 class Players(Enum):
     Computer: bool = True
     Human: bool = False
 
 
 class Game:
-    def __init__(self, player1: Players, player2: Players, player3: Players, do_print: bool = True, rounds: int = 3) -> None:
+    def __init__(self, player1: Players, player2: Players, player3: Players, do_print: bool = True, rounds: int = 3, depth: int = 3) -> None:
         self.graph: Graph = Graph()
         self.players = {0: player1, 1: player2, 2: player3}
         self.rounds: int = rounds
         self.do_print: bool = do_print
+        self.depth: int = depth
         self.start()
-        if do_print: print(self)
-
+        if do_print:
+            print(self)
 
     def start(self) -> None:
         self.graph.start()
@@ -32,7 +34,6 @@ class Game:
         answer = len([card for card in self.graph.state.cards[player] if card in cards]) > 0
 
         self.graph.update(player, cards, answer)
-
 
         print(f"Player {player+1} was asked if he had one of the cards {cards}, he said {answer}")
 
@@ -94,24 +95,21 @@ class Game:
             yield a
 
     def guess(self, should_guess: list[list[bool]]):
+        self.should_guesses = []
         for player, should_guesses in enumerate(should_guess):
             do_guess = choice(should_guesses)
+            self.should_guesses.append(should_guesses)
             guess = choice([s for s in self.graph.states if s.cards[player] == self.graph.state.cards[player]])
             yield guess if do_guess else None
 
     def get_scores(self):
         correct = []
-        for player, guess in enumerate(self.guess(self.search())):
+        for player, guess in enumerate(self.guess(self.search(self.depth))):
             correct.append(guess == self.graph.state if guess != None else None)
             print(f"Player {player} guesses: {guess}" + (f", this is {guess == self.graph.state}" if guess != None else ""))
         print(f"The real state is {self.graph.state}")
 
         mapping = {None: -1 if any(correct) else 0, True: 1, False: -1}
-        scores = [mapping[b] for b in correct]
-        for i, score in enumerate(scores):
+        self.scores = [mapping[b] for b in correct]
+        for i, score in enumerate(self.scores):
             print(f"Player {i+1} got a score of {score}.")
-
-
-    
-            
-            
