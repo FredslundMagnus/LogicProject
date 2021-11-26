@@ -1,6 +1,6 @@
 from game import Game, Players
 
-game = Game(Players.Computer, Players.Computer, Players.Computer, do_print=False, rounds=2, depth=0)
+game = Game(Players.Computer, Players.Computer, Players.Computer, do_print=True, rounds=2, depth=4)
 
 
 for round in game:
