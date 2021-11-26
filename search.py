@@ -25,7 +25,7 @@ def guess_search(states, state, dept, player, assume_guess, return_reward):
             Eng_reward += next_guess[1] * (1 - next_guess[0]) * (1 - prob[1]) + (1 - next_guess[0]) * (1 - next_guess[1])
         Eng_reward = Eng_reward/len(possible_states) - 1
     if return_reward:
-        return Eng_reward
+        return Eg_reward if assume_guess else Eng_reward
     if Eg_reward >= 0 or Eg_reward >= Eng_reward:
         return True
     if dept == 0:
