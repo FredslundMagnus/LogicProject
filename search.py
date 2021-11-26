@@ -3,6 +3,8 @@
 
 
 def search(states, possible_states, player, dept, assume_guess):
+    if dept == 0:
+        return assume_guess
     Eng_reward = 0
     for state in possible_states:
         Eng_reward += guess_search(states, state, dept, player, assume_guess, return_reward=True)
