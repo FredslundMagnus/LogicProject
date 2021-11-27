@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 from os.path import join
 
 
-with open(join("data", "all_scores.pickle"), 'rb') as f:
+with open(join("data", "all_scores_2.pickle"), 'rb') as f:
     all_scores = load(f)
 
-with open(join("data", "did_agree.pickle"), 'rb') as f:
+with open(join("data", "did_agree_2.pickle"), 'rb') as f:
     did_agree = load(f)
 
 print([sum(a) for a in all_scores])
