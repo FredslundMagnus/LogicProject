@@ -3,7 +3,7 @@ from game import Game, Players
 from contextlib import redirect_stdout as printer
 from sys import stdout as terminal
 import numpy as np
-# from pickle import dump
+from pickle import dump
 all_scores: list[list[int]] = []
 did_agree: list[list[bool]] = []
 
@@ -43,8 +43,8 @@ print([f"{sum(a)/len(a)*100:.2f}%" for a in did_agree])
 print([(1.96 * np.std(a)/np.sqrt(len(a)))/len(a) for a in did_agree])
 
 
-# with open("all_scores_3.pickle", 'wb') as f:
-#     dump(all_scores, f)
+with open("all_scores_3.pickle", 'wb') as f:
+    dump(all_scores, f)
 
-# with open("did_agree_3.pickle", 'wb') as f:
-#     dump(did_agree, f)
+with open("did_agree_3.pickle", 'wb') as f:
+    dump(did_agree, f)
