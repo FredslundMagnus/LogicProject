@@ -36,6 +36,6 @@ plot(mean_scores, "Mean Score")
 plot(did_agree_percentage, "Agreeness")
 
 
-# calculate Pearson's correlation
+# Calculate Pearson's Correlation
 corr = pearsonr(mean_scores, did_agree_percentage)[0]
 print('Pearsons correlation: %.3f' % corr)
