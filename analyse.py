@@ -1,3 +1,4 @@
+from __future__ import annotations
 from pickle import load
 import numpy as np
 import matplotlib.pyplot as plt
@@ -21,12 +22,14 @@ did_agree_percentage = [sum(a)/len(a) for a in did_agree]
 print([f"{p*100:.2f}%" for p in did_agree_percentage])
 print([(1.96 * np.std(a)/np.sqrt(len(a)))/len(a) for a in did_agree])
 
-plt.plot(mean_scores)
-plt.title("Mean Score")
-plt.savefig(join("plots", "Mean_Score.png"))
-plt.clf()
 
-plt.plot(did_agree_percentage)
-plt.title("Agreeness")
-plt.savefig(join("plots", "Agreeness.png"))
-plt.clf()
+def plot(data: list[float], title: str):
+    plt.xticks(range(5))
+    plt.plot(data)
+    plt.title(title)
+    plt.savefig(join("plots", f"{title.replace(' ', '_')}.png"))
+    plt.clf()
+
+
+plot(mean_scores, "Mean Score")
+plot(did_agree_percentage, "Agreeness")
