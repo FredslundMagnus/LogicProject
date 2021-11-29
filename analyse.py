@@ -1,4 +1,5 @@
 from __future__ import annotations
+from scipy.stats import pearsonr
 from pickle import load
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,3 +34,8 @@ def plot(data: list[float], title: str):
 
 plot(mean_scores, "Mean Score")
 plot(did_agree_percentage, "Agreeness")
+
+
+# calculate Pearson's correlation
+corr = pearsonr(mean_scores, did_agree_percentage)[0]
+print('Pearsons correlation: %.3f' % corr)
