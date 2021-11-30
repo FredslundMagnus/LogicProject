@@ -21,7 +21,7 @@ for depth in range(5):
         # with printer(terminal):
         #     print(f"{(depth*n+k)/(d*n)*100:.2f}%")
         game = Game(Players.Human, Players.Computer, Players.Computer, do_print=False, rounds=3, depth=depth)
-
+        print(game.graph.state.cards[0])
         for round in game:
             for i in range(3):
                 game.update(i, Game.sample())
