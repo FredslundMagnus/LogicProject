@@ -4,6 +4,7 @@ from enum import Enum
 from random import sample, choice
 from search import search
 from state import State
+from copy import deepcopy
 
 
 class Players(Enum):
@@ -14,6 +15,7 @@ class Players(Enum):
 class Game:
     def __init__(self, player1: Players, player2: Players, player3: Players, do_print: bool = True, rounds: int = 3, depth: int = 3) -> None:
         self.graph: Graph = Graph()
+        self.states_backup = self.graph.states
         self.players = {0: player1, 1: player2, 2: player3}
         self.rounds: int = rounds
         self.do_print: bool = do_print
@@ -97,10 +99,20 @@ class Game:
     def guess(self, should_guess: list[list[bool]]):
         self.should_guesses = []
         for player, should_guesses in enumerate(should_guess):
-            do_guess = choice(should_guesses)
-            self.should_guesses.append(should_guesses)
-            guess = choice([s for s in self.graph.states if s.cards[player] == self.graph.state.cards[player]])
-            yield guess if do_guess else None
+            if self.players[player] == Players.Human:
+                guess = [eval("{" + v + "}") for v in input("State your guess 1,1|2,2|3,3 or None: ").split("|")]
+                if len(guess) == 1:
+                    yield None
+                    continue
+                try:
+                    yield [s for s in self.states_backup if s.cards[0] == guess[0] and s.cards[1] == guess[1] and s.cards[2] == guess[2]][0]
+                except Exception:
+                    yield guess
+            else:
+                do_guess = choice(should_guesses)
+                self.should_guesses.append(should_guesses)
+                guess = choice([s for s in self.graph.states if s.cards[player] == self.graph.state.cards[player]])
+                yield guess if do_guess else None
 
     def get_scores(self):
         correct = []
