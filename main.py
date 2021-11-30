@@ -7,7 +7,7 @@ from pickle import dump
 all_scores: list[list[int]] = []
 did_agree: list[list[bool]] = []
 
-n: int = 1
+n: int = 10
 d: int = 5
 
 
