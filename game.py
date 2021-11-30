@@ -100,7 +100,11 @@ class Game:
         self.should_guesses = []
         for player, should_guesses in enumerate(should_guess):
             if self.players[player] == Players.Human:
-                guess = [eval("{" + v + "}") for v in input("State your guess 1,1|2,2|3,3 or None: ").split("|")]
+                try:
+                    guess = [eval("{" + v + "}") for v in input("State your guess 1,1|2,2|3,3 or None: ").split("|")]
+                except Exception:
+                    yield None
+                    continue
                 if len(guess) == 1:
                     yield None
                     continue
