@@ -49,7 +49,18 @@ def info(data: dict[int, list[list[int]]]):
 
             humans = value[:, :key]
             computer = value[:, key:]
+            # print(computer)
             yield str(f(humans))[:5].center(5)
             yield str(f(computer))[:5].center(5)
             print(key, f.__name__, "Humans", f"{f(humans):.2f}")
             print(key, f.__name__, "Computer", f"{f(computer):.2f}")
+
+def histogram(data: dict[int, list[list[int]]]):
+    data = {key: array(value) for key, value in data.items()}
+    for key, value in data.items():
+        humans = value[:, :key]
+        computers = value[:, key:]
+        flat_humans  = [item for sublist in humans for item in sublist]
+        flat_computers = [item for sublist in computers for item in sublist]
+        plt.hist([flat_humans,flat_computers], density=True)
+        plt.show()

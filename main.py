@@ -7,7 +7,7 @@ from pickle import dump
 all_scores: list[list[int]] = []
 did_agree: list[list[bool]] = []
 
-n: int = 10
+n: int = 1  
 d: int = 5
 
 
@@ -20,8 +20,8 @@ for depth in range(5):
     for k in range(n):
         # with printer(terminal):
         #     print(f"{(depth*n+k)/(d*n)*100:.2f}%")
-        game = Game(Players.Human, Players.Computer, Players.Computer, do_print=False, rounds=3, depth=depth)
-        print(game.graph.state.cards[0])
+        game = Game(Players.Human, Players.Computer, Players.Computer, do_print=False, rounds=4, depth=depth)
+        print(game)
         for round in game:
             for i in range(3):
                 game.update(i, Game.sample())
