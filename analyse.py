@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
         with open(join("data", f"did_agree{ending}.pickle"), 'rb') as f:
             did_agree = [a+b for a, b in zip(did_agree, load(f))]
-            
+
     print([sum(a) for a in all_scores])
     mean_scores = [sum(a)/len(a) for a in all_scores]
     print([f"{s:.2f}" for s in mean_scores])
@@ -55,12 +55,35 @@ def info(data: dict[int, list[list[int]]]):
             print(key, f.__name__, "Humans", f"{f(humans):.2f}")
             print(key, f.__name__, "Computer", f"{f(computer):.2f}")
 
-def histogram(data: dict[int, list[list[int]]]):
+
+def histogram_multi(title: str, *data: dict[int, list[list[int]]]):
+    datas = [{key: array(value) for key, value in d.items()} for d in data]
+    flat_humans = [None for _ in datas]
+    flat_computers = [None for _ in datas]
+    for i, data in enumerate(datas):
+        for key, value in data.items():
+            humans = value[:, :key]
+            computers = value[:, key:]
+            flat_humans[i] = [item for sublist in humans for item in sublist]
+            flat_computers[i] = [item for sublist in computers for item in sublist]
+    plt.hist([*flat_humans, *flat_computers], bins=np.arange(4) - 1.5, density=True, align='mid')
+    plt.xticks([-1, 0, 1])
+    plt.title(title)
+    plt.savefig(join("plots", f"{title.replace(' ', '_')}.png"))
+    # plt.show()
+    plt.clf()
+
+
+def histogram(title: str, data: dict[int, list[list[int]]]):
     data = {key: array(value) for key, value in data.items()}
     for key, value in data.items():
         humans = value[:, :key]
         computers = value[:, key:]
-        flat_humans  = [item for sublist in humans for item in sublist]
-        flat_computers = [item for sublist in computers for item in sublist]
-        plt.hist([flat_humans,flat_computers], density=True)
-        plt.show()
+        flat_humans = [item-0.5 for sublist in humans for item in sublist]
+        flat_computers = [item-0.5 for sublist in computers for item in sublist]
+        plt.hist([flat_humans, flat_computers], bins=np.arange(4) - 1.5, density=True)
+        plt.xticks([-1, 0, 1])
+        plt.title(title)
+        plt.savefig(join("plots", f"{title.replace(' ', '_')+ '_' + str(key)}.png"))
+        # plt.show()
+        plt.clf()
